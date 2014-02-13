@@ -13,14 +13,15 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 public class MyRenderer implements Renderer {
-	static final int SIZE_TEXTURES = 5;
+	static final int SIZE_TEXTURES = 6;
 	
 	static public int[] texture_name={ 
 		R.drawable.sea,
 		R.drawable.riba,
 		R.drawable.fish,
 		R.drawable.land,
-		R.drawable.ship_1
+		R.drawable.ship_1,
+		R.drawable.pirate_ship
 		 }; 
 	
 	static public int[] textures = new int[SIZE_TEXTURES];
@@ -33,11 +34,12 @@ public class MyRenderer implements Renderer {
 	Field GameField[][] = new Field[SIZE_FIELD][SIZE_FIELD];
 	Rectangle Sea = new Rectangle(500, 500);
 	boolean FlagDown = false;
+	boolean FlagMove = false;
 	float touch_x = 0, touch_y = 0; 
 	float center_x = 0, center_y = 0;
 	float start_x = 0, start_y = 0;
 	int DownFrame = 0;
-	Ship ship_one = new Ship(5,5,1,"The Best",2,1,2,10,4);
+	Ship ship_one = new Ship(5,5,1,"The Best",2,1,2,10,5);
 	
 	int frame = 0;
 	long start_time = System.currentTimeMillis();
@@ -104,10 +106,13 @@ public class MyRenderer implements Renderer {
 			DownFrame = 0;
 		}
 		
-		if(DownFrame > 40) {
+		if(DownFrame > 40 && FlagMove != true) {
 			Point p = ConvertToReal(start_x, start_y);
 			boolean logic = ship_one.Check(p.x, p.y, 100);
-			if(logic) Log.v("Check", "Yes"); 
+			if(logic) {
+				Log.v("Check", "Yes");
+				FlagMove = true;
+			}
 			else Log.v("Check", "No");
 		}
 		
@@ -150,20 +155,39 @@ public class MyRenderer implements Renderer {
 	}
 	
 	public void Touch(float x, float y) {
-		/*float PX = WinWid/ScreenWidth;
+		float PX = WinWid/ScreenWidth;
 		float PY = WinHei/ScreenHeight;
-		float real_x = x*PX-WinWid/2-center_x;
+		/*float real_x = x*PX-WinWid/2-center_x;
 		float real_y = -(y*PY-WinHei/2+center_y);*/
 		
 		
-		if(FlagDown) {
-			center_x -= touch_x - x;
-			center_y += touch_y - y;
+		if(FlagDown && !FlagMove) {
+			center_x -= (touch_x - x)*PX;
+			center_y += (touch_y - y)*PY;
 			touch_x = x; touch_y = y;
 
 		}
 		else {
-			touch_x = x; touch_y = y;
+			if(FlagMove && FlagDown) {
+				ship_one.coordinates[0] -= (touch_x - x)*PX;
+				ship_one.coordinates[1] += (touch_y - y)*PY;
+				touch_x = x; touch_y = y;
+			}
+			else {
+				if(FlagMove) {
+					FlagMove = false;
+					int j = (int)Math.round(ship_one.coordinates[0]/(3*Field.RADIUS/2));
+					int i;
+					if(j%2 == 0) {
+						i = (int)Math.round(ship_one.coordinates[1]/(1.73205f*Field.RADIUS));
+					}
+					else {
+						i = (int)Math.round((ship_one.coordinates[1]-1.73205f*Field.RADIUS/2)/(1.73205f*Field.RADIUS));
+					}
+					ship_one.Move(j, i);
+				}
+				touch_x = x; touch_y = y;
+			}
 		}
 	}
 	

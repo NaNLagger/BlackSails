@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			} break;
 			case MotionEvent.ACTION_UP: {
 				r.FlagDown = false;
+				r.Touch(x, y);
 			} break;
 			case MotionEvent.ACTION_CANCEL: {
 			} break;

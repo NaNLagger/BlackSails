@@ -91,5 +91,13 @@ public class Ship {
 		if(x*x+y*y <= range*range) return true;
 		else return false;
 	}
+	
+	public boolean Move(int pos_x, int pos_y) {
+		position[0] = pos_x;
+		position[1] = pos_y;
+		this.coordinates[0] = (3*Field.RADIUS/2)*position[0];
+		this.coordinates[1] = 1.73205f*Field.RADIUS*position[1] + (1.73205f*Field.RADIUS/2)*(position[0]%2);
+		return false;
+	}
 
 }
