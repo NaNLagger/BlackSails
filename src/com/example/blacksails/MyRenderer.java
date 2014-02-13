@@ -42,6 +42,7 @@ public class MyRenderer implements Renderer {
 	Ship ship_one = new Ship(5,5,1,"The Best",2,1,2,10,5);
 	
 	int frame = 0;
+	int temp_fps;
 	long start_time = System.currentTimeMillis();
 	
 	
@@ -106,7 +107,7 @@ public class MyRenderer implements Renderer {
 			DownFrame = 0;
 		}
 		
-		if(DownFrame > 40 && FlagMove != true) {
+		if(DownFrame > temp_fps/2 && FlagMove != true) {
 			Point p = ConvertToReal(start_x, start_y);
 			boolean logic = ship_one.Check(p.x, p.y, 100);
 			if(logic) {
@@ -197,6 +198,7 @@ public class MyRenderer implements Renderer {
 		if(current_time - start_time >= 1000) {
 			Log.v("FPS", frame + "");
 			start_time = current_time;
+			temp_fps = frame;
 			frame = 0;
 		}
 		

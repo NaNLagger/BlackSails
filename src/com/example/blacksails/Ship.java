@@ -93,11 +93,28 @@ public class Ship {
 	}
 	
 	public boolean Move(int pos_x, int pos_y) {
-		position[0] = pos_x;
-		position[1] = pos_y;
-		this.coordinates[0] = (3*Field.RADIUS/2)*position[0];
-		this.coordinates[1] = 1.73205f*Field.RADIUS*position[1] + (1.73205f*Field.RADIUS/2)*(position[0]%2);
-		return false;
+		float cord_temp_x = (3*Field.RADIUS/2)*position[0];
+		float cord_temp_y = 1.73205f*Field.RADIUS*position[1] + (1.73205f*Field.RADIUS/2)*(position[0]%2);
+		
+		float cord_new_x = (3*Field.RADIUS/2)*pos_x;
+		float cord_new_y = 1.73205f*Field.RADIUS*pos_y + (1.73205f*Field.RADIUS/2)*(pos_x%2);
+		
+		boolean logic_move = (cord_new_x - cord_temp_x)*(cord_new_x - cord_temp_x)
+							+(cord_new_y - cord_temp_y)*(cord_new_y - cord_temp_y) 
+							<= ((this.Range*2)*Field.RADIUS)*((this.Range*2)*Field.RADIUS);
+		
+		if(logic_move) {
+			position[0] = pos_x;
+			position[1] = pos_y;
+			this.coordinates[0] = cord_new_x;
+			this.coordinates[1] = cord_new_y;
+			return true;
+		}
+		else {
+			this.coordinates[0] = cord_temp_x;
+			this.coordinates[1] = cord_temp_y;
+			return false;
+		}
 	}
 
 }
