@@ -43,10 +43,8 @@ public class MyRenderer implements Renderer {
 	long start_time = System.currentTimeMillis();
 	
 	
-	public MyRenderer(Context c, int width, int height) {
+	public MyRenderer(Context c) {
 		con = c;
-		ScreenWidth = (float)width;
-		ScreenHeight = (float)height;
 	}
 	
 	public void loadGLTexture(GL10 gl) { 
@@ -117,9 +115,11 @@ public class MyRenderer implements Renderer {
 	}	
 
 	@Override
-	public void onSurfaceChanged(GL10 gl, int arg1, int arg2) {
+	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		// TODO Auto-generated method stub
-
+		ScreenWidth = (float)width;
+		ScreenHeight = (float)height;
+		Log.v("Screen", ScreenWidth + " | " + ScreenHeight);
 	}
 
 	@Override
