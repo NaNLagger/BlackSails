@@ -39,7 +39,14 @@ public class MyRenderer implements Renderer {
 	float center_x = 0, center_y = 0;
 	float start_x = 0, start_y = 0;
 	int DownFrame = 0;
-	Ship ship_one = new Ship(5,5,1,"The Best",2,1,2,10,5);
+	Ship ship_one = new Ship(5,5, //Позиция корабля
+							1, //Тип корабля
+							"The Best", //Наименование типа
+							2, //Радиус обзора
+							2, //Очки передвижения
+							2, //Урон
+							10, //Жизни
+							5); // id текстуры
 	
 	int frame = 0;
 	int temp_fps;
@@ -131,7 +138,7 @@ public class MyRenderer implements Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
 		// TODO Auto-generated method stub
-		gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
 		gl.glMatrixMode(GL10.GL_PROJECTION);
 		gl.glLoadIdentity();
 		gl.glOrthof(-WinWid/2, WinWid/2, -WinHei/2, WinHei/2, -100, 100);
